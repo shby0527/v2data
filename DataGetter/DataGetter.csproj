@@ -22,4 +22,14 @@
   <Content Include="**\*.json" Exclude="bin\**\*;obj\**\*" CopyToOutputDirectory="PreserveNewest" />
 </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SecretLib\SecretLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="v2ray.pk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

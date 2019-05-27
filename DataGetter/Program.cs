@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SecretLib.Asymmetric;
+using SecretLib.Symmetric;
 using V2Ray.Core.App.Stats.Command;
 
 namespace DataGetter
@@ -50,6 +52,8 @@ namespace DataGetter
                     return client;
                 });
                 services.AddSingleton<IV2RayCollectService, V2RayCollectService>();
+                services.AddSingleton<IAsymmetric, RsaAsymmetricService>();
+                services.AddSingleton<ISymmetric, AesCBCService>();
                 services.AddHostedService<TimeBasedService>();
             });
             builder.Build().Run();
