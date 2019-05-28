@@ -24,7 +24,7 @@ namespace DataGetter.Services.Impl
         {
             QueryStatsRequest request = new QueryStatsRequest()
             {
-                Reset = false,
+                Reset = true,
                 Pattern = ""
             };
             QueryStatsResponse response = await client.QueryStatsAsync(request);
