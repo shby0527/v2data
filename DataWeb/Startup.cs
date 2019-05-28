@@ -41,6 +41,17 @@ namespace DataWeb
             });
             services.AddSingleton<ISymmetric, AesCBCService>();
             services.AddSingleton<IAsymmetric, RsaAsymmetricService>();
+            services.AddCors(p =>
+            {
+                p.DefaultPolicyName = "default";
+                p.AddDefaultPolicy(x =>
+                {
+                    x.AllowAnyHeader();
+                    x.AllowAnyMethod();
+                    x.AllowAnyOrigin();
+                    x.AllowCredentials();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +61,8 @@ namespace DataWeb
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors();
 
             app.UseMvcWithDefaultRoute();
         }
