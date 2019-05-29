@@ -3,26 +3,23 @@
     <div id="chart" class="charts"></div>
     <div class="query">
       <el-form label-width="88px">
-        <el-col :span="6">
+        <el-col :span="10">
           <el-form-item label="邮箱">
             <el-input v-model="name" />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="开始时间">
+        <el-col :span="10">
+          <el-form-item label="时间范围">
             <el-date-picker
-              v-model="start"
-              type="date" />
+              v-model="times"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="结束时间">
-            <el-date-picker
-              v-model="end"
-              type="date" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-form-item>
             <el-button @click="loadData" type="primary">查询</el-button>
           </el-form-item>
@@ -66,33 +63,34 @@
 <script>
 import api from '../api'
 import memont from 'dayjs'
+import echart from 'echarts'
 
 export default {
   name: 'HelloWorld',
   data () {
     let now = new Date()
     let start = new Date()
-    start.setDate(start.getDate() - 1)
+    start.setHours(start.getHours() - 3)
     return {
       name: '',
-      start: start,
-      end: now,
-      v2ray: []
+      times: [start, now],
+      v2ray: [],
+      chart: null
     }
   },
   mounted () {
     this.loadData()
+    this.chart = echart.init(document.getElementById('chart'))
   },
   methods: {
     loadData () {
-      api.data.query(this.name, this.start, this.end)
+      api.data.query(this.name, this.times[0], this.times[1])
         .then(response => {
-          let echart = require('echarts')
           this.v2ray.splice(0, this.v2ray.length)
           response.data.forEach(e => this.v2ray.push(e))
           this.$nextTick(() => {
-            let chart = echart.init(document.getElementById('chart'))
-            chart.setOption(this.makeLine())
+            this.chart.clear()
+            this.chart.setOption(this.makeLine())
           })
         })
     },
@@ -101,9 +99,8 @@ export default {
     },
     makeLine () {
       let date = []
-      let start = new Date()
-      start.setDate(start.getDate() - 1)
-      let now = new Date()
+      let start = new Date(this.times[0].getTime())
+      let now = new Date(this.times[1].getTime())
       // eslint-disable-next-line no-unmodified-loop-condition
       while (start < now) {
         start.setMinutes(start.getMinutes() + 10)
