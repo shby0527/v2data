@@ -1,4 +1,4 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://39.100.115.180'
+axios.defaults.baseURL = 'https://v2.umiblog.cn'
 axios.defaults.withCredentials = false
