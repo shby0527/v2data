@@ -5,17 +5,17 @@ using Org.BouncyCastle.Crypto.Parameters;
 namespace SecretLib.Symmetric
 {
     /// <summary>
-    /// 对称加密算法的通用接口
+    /// 瀵圭О鍔犲瘑绠楁硶鐨勯�氱敤鎺ュ彛
     /// </summary>
     public interface ISymmetric
     {
         /// <summary>
-        /// 加密算法
+        /// 鍔犲瘑绠楁硶
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// 加密
+        /// 鍔犲瘑
         /// </summary>
         /// <param name="data"></param>
         /// <param name="key"></param>
@@ -23,7 +23,7 @@ namespace SecretLib.Symmetric
         byte[] Encrypto(byte[] data, KeyParameter key);
 
         /// <summary>
-        /// 解密
+        /// 瑙ｅ瘑
         /// </summary>
         /// <param name="data"></param>
         /// <param name="key"></param>

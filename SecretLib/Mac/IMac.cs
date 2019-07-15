@@ -4,17 +4,17 @@ using Org.BouncyCastle.Crypto.Parameters;
 namespace SecretLib.Mac
 {
     /// <summary>
-    /// MacËã·¨
+    /// Macç®—æ³•
     /// </summary>
     public interface IMac
     {
         /// <summary>
-        /// Ëã·¨Ãû³Æ
+        /// ç®—æ³•åç§°
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// ¼ÆËãÏûÏ¢Âë
+        /// è®¡ç®—æ¶ˆæ¯ç 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="key"></param>

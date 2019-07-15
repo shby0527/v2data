@@ -3,17 +3,17 @@ using System;
 namespace SecretLib.Hash
 {
     /// <summary>
-    /// É¢ÁĞº¯Êı
+    /// æ•£åˆ—å‡½æ•°
     /// </summary>
     public interface IHash
     {
         /// <summary>
-        /// Ëã·¨Ãû
+        /// ç®—æ³•å
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// ¼ÆËãÉ¢ÁĞ
+        /// è®¡ç®—æ•£åˆ—
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>

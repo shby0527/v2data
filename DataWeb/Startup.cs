@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SecretLib.Asymmetric;
+using SecretLib.Hash;
+using SecretLib.Sign;
 using SecretLib.Symmetric;
 
 namespace DataWeb
@@ -41,6 +43,8 @@ namespace DataWeb
             });
             services.AddSingleton<ISymmetric, AesCBCService>();
             services.AddSingleton<IAsymmetric, RsaAsymmetricService>();
+            services.AddSingleton<IHash, SHA256Hash>();
+            services.AddSingleton<ISign, EcdsaSignProvider>();
             services.AddCors(p =>
             {
                 p.DefaultPolicyName = "default";

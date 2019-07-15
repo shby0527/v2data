@@ -6,12 +6,12 @@ namespace SecretLib.Asymmetric
     public interface IAsymmetric
     {
         /// <summary>
-        /// 签名算法
+        /// 绛惧悕绠楁硶
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// 加密
+        /// 鍔犲瘑
         /// </summary>
         /// <param name="data"></param>
         /// <param name="pk"></param>
@@ -19,7 +19,7 @@ namespace SecretLib.Asymmetric
         byte[] Encrypto(byte[] data, AsymmetricKeyParameter pk);
 
         /// <summary>
-        /// 解密
+        /// 瑙ｅ瘑
         /// </summary>
         /// <param name="data"></param>
         /// <param name="ppk"></param>
