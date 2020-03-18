@@ -124,7 +124,7 @@ export default {
         },
         series: []
       }
-      var down = this.v2ray.filter(e => e.linkType === 'downlink')
+      var down = this.v2ray.filter(e => e.linkType === 'downlink' && e.utype === 'user')
       chartObj.legend.data.forEach(e => {
         let udata = down.filter(u => u.user === e)
         let sery = {
@@ -165,7 +165,7 @@ export default {
         },
         series: []
       }
-      var down = this.v2ray.filter(e => e.linkType === 'uplink')
+      var down = this.v2ray.filter(e => e.linkType === 'uplink' && e.utype === 'user')
       chartObj.legend.data.forEach(e => {
         let udata = down.filter(u => u.user === e)
         let sery = {
