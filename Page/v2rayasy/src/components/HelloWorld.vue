@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
-    <div id="chart" class="charts"></div>
+    <div class="charts-area">
+      <div id="chart" class="charts"></div>
+      <div id="chart2" class="charts"></div>
+    </div>
     <div class="query">
       <el-form label-width="88px">
         <el-col :span="10">
@@ -75,74 +78,112 @@ export default {
       name: '',
       times: [start, now],
       v2ray: [],
-      chart: null
+      chart: null,
+      chart2: null
     }
   },
   mounted () {
     this.loadData()
     this.chart = echart.init(document.getElementById('chart'))
+    this.chart2 = echart.init(document.getElementById('chart2'))
   },
   methods: {
     loadData () {
       api.data.query(this.name, this.times[0], this.times[1])
         .then(response => {
-          this.v2ray.splice(0, this.v2ray.length)
-          response.data.forEach(e => this.v2ray.push(e))
+          this.v2ray = response.data
           this.$nextTick(() => {
             this.chart.clear()
-            this.chart.setOption(this.makeLine())
+            this.chart2.clear()
+            this.makeLine1()
+            this.makeLine2()
           })
         })
     },
     formatter (row, column, cellValue, index) {
       return memont(cellValue).format('YYYY年MM月DD日 HH:mm:ss')
     },
-    makeLine () {
-      let date = []
-      let start = new Date(this.times[0].getTime())
-      let now = new Date(this.times[1].getTime())
-      // eslint-disable-next-line no-unmodified-loop-condition
-      while (start < now) {
-        start.setMinutes(start.getMinutes() + 10)
-        date.push(memont(start).format('YYYY年MM月DD日 HH:mm:ss'))
-      }
-      let userData = Array.from(new Set(this.v2ray.map(item => item.user + '(' + item.linkType + ')')))
-      let series = []
-      userData.forEach(u => {
-        let all = this.v2ray.filter(n => u === (n.user + '(' + n.linkType + ')'))
-        let fixed = date.length - all.length
-        let rtn = []
-        for (var i = 0; i < fixed; i++) {
-          rtn.push(0)
-        }
-        all.forEach(a => rtn.push(a.size))
-        series.push({
-          name: u,
-          type: 'line',
-          stack: '流量',
-          data: rtn
-        })
-      })
-      return {
+    makeLine1 () {
+      var chartObj = {
         title: {
-          text: '流量统计图'
+          text: '下行流量'
         },
         tooltip: {
           trigger: 'axis'
         },
         legend: {
-          data: userData
+          data: Array.from(new Set(this.v2ray.map(e => e.user)))
         },
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: date
+          data: Array.from(new Set(this.v2ray.map(e => memont(e.createTime).format('YYYY年MM月DD日 HH:mm:ss'))))
         },
         yAxis: {
           type: 'value'
         },
-        series: series
+        series: []
       }
+      var down = this.v2ray.filter(e => e.linkType === 'downlink')
+      chartObj.legend.data.forEach(e => {
+        let udata = down.filter(u => u.user === e)
+        let sery = {
+          name: e,
+          type: 'line',
+          stack: '流量',
+          data: []
+        }
+        chartObj.xAxis.data.forEach(time => {
+          if (udata.some(ud => memont(ud.createTime).format('YYYY年MM月DD日 HH:mm:ss') === time)) {
+            sery.data.push(udata.find(ud => memont(ud.createTime).format('YYYY年MM月DD日 HH:mm:ss') === time).size)
+          } else {
+            sery.data.push(0)
+          }
+        })
+        chartObj.series.push(sery)
+      })
+      this.chart.setOption(chartObj)
+    },
+    makeLine2 () {
+      var chartObj = {
+        title: {
+          text: '上行流量'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: Array.from(new Set(this.v2ray.map(e => e.user)))
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: Array.from(new Set(this.v2ray.map(e => memont(e.createTime).format('YYYY年MM月DD日 HH:mm:ss'))))
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: []
+      }
+      var down = this.v2ray.filter(e => e.linkType === 'uplink')
+      chartObj.legend.data.forEach(e => {
+        let udata = down.filter(u => u.user === e)
+        let sery = {
+          name: e,
+          type: 'line',
+          stack: '流量',
+          data: []
+        }
+        chartObj.xAxis.data.forEach(time => {
+          if (udata.some(ud => memont(ud.createTime).format('YYYY年MM月DD日 HH:mm:ss') === time)) {
+            sery.data.push(udata.find(ud => memont(ud.createTime).format('YYYY年MM月DD日 HH:mm:ss') === time).size)
+          } else {
+            sery.data.push(0)
+          }
+        })
+        chartObj.series.push(sery)
+      })
+      this.chart2.setOption(chartObj)
     }
   }
 }
@@ -153,5 +194,9 @@ export default {
 .charts {
   width: 100%;
   height: 400px;
+  flex-shrink: 1;
+}
+.charts-area {
+  display: flex;
 }
 </style>
