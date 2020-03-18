@@ -112,7 +112,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: Array.from(new Set(this.v2ray.map(e => e.user)))
+          data: Array.from(new Set(this.v2ray.filter(e => e.utype === 'user').map(e => e.user)))
         },
         xAxis: {
           type: 'category',
@@ -153,7 +153,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: Array.from(new Set(this.v2ray.map(e => e.user)))
+          data: Array.from(new Set(this.v2ray.filter(e => e.utype === 'user').map(e => e.user)))
         },
         xAxis: {
           type: 'category',
