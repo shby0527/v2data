@@ -66,13 +66,9 @@ namespace DataGetter.Services.Impl
                     KeyParameter key = new KeyParameter(keyData);
                     byte[] encrytpo = symmetric.Encrypto(bytes, key);
                     byte[] keyEncrypto = asymmetric.Encrypto(key.GetKey(), parameter);
-                    Dictionary<string, string> formData = new Dictionary<string, string>() {
-                        { "tag", tags }
-                    };
                     using (MultipartFormDataContent content = new MultipartFormDataContent())
                     using (ByteArrayContent sdata = new ByteArrayContent(encrytpo))
                     using (ByteArrayContent skeyData = new ByteArrayContent(keyEncrypto))
-                    using (FormUrlEncodedContent form = new FormUrlEncodedContent(formData))
                     {
                         sdata.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                         skeyData.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
@@ -88,7 +84,7 @@ namespace DataGetter.Services.Impl
                         };
                         content.Add(sdata);
                         content.Add(skeyData);
-                        content.Add(form);
+                        content.Add(new StringContent(tags), "tag");
                         await http.PostAsync("/api/data", content);
                     }
 
