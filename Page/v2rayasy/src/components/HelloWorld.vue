@@ -6,9 +6,14 @@
     </div>
     <div class="query">
       <el-form label-width="88px">
-        <el-col :span="10">
+        <el-col :span="5">
           <el-form-item label="邮箱">
             <el-input v-model="name" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="服务器名">
+            <el-input v-model="tags" />
           </el-form-item>
         </el-col>
         <el-col :span="10">
@@ -49,8 +54,8 @@
           sortable
         />
         <el-table-column
-          prop="utype"
-          label="用户类型"
+          prop="tags"
+          label="服务器名称"
         />
         <el-table-column
           prop="createTime"
@@ -76,6 +81,7 @@ export default {
     start.setHours(start.getHours() - 3)
     return {
       name: '',
+      tags: '',
       times: [start, now],
       v2ray: [],
       chart: null,
@@ -89,7 +95,7 @@ export default {
   },
   methods: {
     loadData () {
-      api.data.query(this.name, this.times[0], this.times[1])
+      api.data.query(this.name, this.times[0], this.times[1], this.tags)
         .then(response => {
           this.v2ray = response.data
           this.$nextTick(() => {
