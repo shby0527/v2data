@@ -35,7 +35,7 @@ namespace DataGetter.Services.Impl
             IConfiguration configuration)
         {
             this.v2rayService = v2ray;
-            this.http = factory.CreateClient();
+            this.http = factory.CreateClient("default");
             this.asymmetric = asymmetric;
             this.symmetric = symmetric;
             string path = configuration.GetValue<string>("PublicKey");

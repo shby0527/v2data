@@ -40,7 +40,7 @@ namespace DataGetter
                 loggerBuilder.AddDebug();
             }).ConfigureServices(services =>
             {
-                services.AddHttpClient();
+                services.AddHttpClient("default", http => http.Timeout = TimeSpan.FromSeconds(40));
                 services.AddLogging();
                 services.AddSingleton<StatsService.StatsServiceClient>(provider =>
                 {
