@@ -70,14 +70,16 @@ namespace DataWeb.Controllers
                 byte[] odata = symmetric.Decrypto(edata, aesKey);
                 string jsonStr = Encoding.UTF8.GetString(odata);
                 IEnumerable<V2RayEntity> entities = JsonConvert.DeserializeObject<IEnumerable<V2RayEntity>>(jsonStr);
-                var db = entities.Select(s => new DataEntity()
-                {
-                    LinkType = s.LinkType,
-                    Size = Convert.ToUInt64(s.DataSize),
-                    User = s.User,
-                    Utype = s.UserType,
-                    CreateTime = DateTime.Now
-                });
+                var db = entities
+                    .Where(e => e.DataSize > 0)
+                    .Select(s => new DataEntity()
+                    {
+                        LinkType = s.LinkType,
+                        Size = Convert.ToUInt64(s.DataSize),
+                        User = s.User,
+                        Utype = s.UserType,
+                        CreateTime = DateTime.Now
+                    });
                 this.db.DataEntity.AddRange(db);
                 this.db.SaveChanges();
             }
