@@ -28,5 +28,8 @@ namespace DataWeb.DbEntities
 
         [Column("createtime")]
         public DateTime CreateTime { get; set; }
+
+        [Column("tags")]
+        public string Tags { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace DataWeb.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<DataEntity> Query([FromQuery]string name, [FromQuery] DateTime? start, [FromQuery] DateTime? end)
+        public IEnumerable<DataEntity> Query([FromQuery]string name, [FromQuery] DateTime? start, [FromQuery] DateTime? end, [FromQuery]string tag)
         {
             var data = from p in db.DataEntity select p;
             if (!string.IsNullOrEmpty(name))
@@ -37,6 +37,10 @@ namespace DataWeb.Controllers
             if (end != null)
             {
                 data = data.Where(p => p.CreateTime <= end);
+            }
+            if (!string.IsNullOrEmpty(tag))
+            {
+                data = data.Where(p => p.Tags == tag);
             }
 
             return data.ToArray();

@@ -56,7 +56,7 @@ namespace DataWeb.Controllers
 
 
         [HttpPost("data")]
-        public string RevecData([FromForm(Name = "data")]IFormFile data, [FromForm(Name = "key")]IFormFile key)
+        public string RevecData([FromForm(Name = "data")]IFormFile data, [FromForm(Name = "key")]IFormFile key, [FromForm(Name = "tag")]string tag)
         {
             using (Stream sdata = data.OpenReadStream())
             using (Stream skey = key.OpenReadStream())
@@ -78,7 +78,8 @@ namespace DataWeb.Controllers
                         Size = Convert.ToUInt64(s.DataSize),
                         User = s.User,
                         Utype = s.UserType,
-                        CreateTime = DateTime.Now
+                        CreateTime = DateTime.Now,
+                        Tags = tag
                     });
                 this.db.DataEntity.AddRange(db);
                 this.db.SaveChanges();
