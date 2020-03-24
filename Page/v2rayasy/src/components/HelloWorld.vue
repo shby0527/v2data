@@ -136,7 +136,6 @@ export default {
         let sery = {
           name: e,
           type: 'line',
-          stack: '流量',
           data: []
         }
         chartObj.xAxis.data.forEach(time => {
@@ -177,7 +176,6 @@ export default {
         let sery = {
           name: e,
           type: 'line',
-          stack: '流量',
           data: []
         }
         chartObj.xAxis.data.forEach(time => {
