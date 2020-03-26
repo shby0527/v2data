@@ -57,7 +57,7 @@ namespace DataGetter.Services.Impl
                     return;
                 try
                 {
-                    var data = await v2rayService.QueryV2RayDataAsync();
+                    var data = await v2rayService.QueryV2RayDataAsync(stoppingToken);
                     string json = JsonConvert.SerializeObject(data);
                     byte[] bytes = Encoding.UTF8.GetBytes(json);
                     RandomNumberGenerator numberGenerator = RandomNumberGenerator.Create();
