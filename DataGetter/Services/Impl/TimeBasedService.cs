@@ -89,7 +89,9 @@ namespace DataGetter.Services.Impl
                     }
 
                 }
-                catch { }
+                catch(Exception e){
+                    Console.Write(JsonConvert.SerializeObject(e));
+                }
                 Thread.Sleep(600000); // 10分钟
             }
         }

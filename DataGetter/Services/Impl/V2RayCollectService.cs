@@ -28,7 +28,7 @@ namespace DataGetter.Services.Impl
                 Reset = true,
                 Pattern = ""
             };
-            QueryStatsResponse response = await client.QueryStatsAsync(request, deadline: DateTime.Now.AddMinutes(1), cancellationToken: token);
+            QueryStatsResponse response = await client.QueryStatsAsync(request, deadline: DateTime.UtcNow.AddMinutes(1), cancellationToken: token);
             return response.Stat.Select(stat =>
             {
 
