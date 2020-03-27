@@ -31,6 +31,7 @@ namespace DataWeb
         {
             services.AddControllers()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest)
+                .AddNewtonsoftJson()
                 .AddControllersAsServices();
             services.AddDbContextPool<V2RayDbContent>(builder =>
             {
