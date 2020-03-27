@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SecretLib.Asymmetric;
 using SecretLib.Symmetric;
+using V2Ray.Core.App.Proxyman.Command;
 using V2Ray.Core.App.Stats.Command;
 
 namespace DataGetter
@@ -42,7 +43,7 @@ namespace DataGetter
             {
                 services.AddHttpClient("default", http => http.Timeout = TimeSpan.FromSeconds(40));
                 services.AddLogging();
-                services.AddSingleton<StatsService.StatsServiceClient>(provider =>
+                services.AddSingleton(provider =>
                 {
                     IConfiguration config = provider.GetRequiredService<IConfiguration>();
                     string host = config.GetConnectionString("V2Ray");
@@ -51,7 +52,17 @@ namespace DataGetter
                     StatsService.StatsServiceClient client = new StatsService.StatsServiceClient(channel);
                     return client;
                 });
+                services.AddSingleton(provider =>
+                {
+                    IConfiguration config = provider.GetRequiredService<IConfiguration>();
+                    string host = config.GetConnectionString("V2Ray");
+                    string[] hostInfo = host.Split(':');
+                    Channel channel = new Channel(hostInfo[0], hostInfo.Length > 1 ? Convert.ToInt32(hostInfo[1]) : 80, ChannelCredentials.Insecure);
+                    HandlerService.HandlerServiceClient client = new HandlerService.HandlerServiceClient(channel);
+                    return client;
+                });
                 services.AddSingleton<IV2RayCollectService, V2RayCollectService>();
+                services.AddSingleton<IUserOperatorService, V2rayUserOperatorService>();
                 services.AddSingleton<IAsymmetric, RsaAsymmetricService>();
                 services.AddSingleton<ISymmetric, AesCBCService>();
                 services.AddHostedService<TimeBasedService>();

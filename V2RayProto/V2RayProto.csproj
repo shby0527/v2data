@@ -8,7 +8,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Grpc" Version="2.27.0"/>
-    <PackageReference Include="Google.Protobuf" Version="3.11.4"/>
+    <PackageReference Include="Grpc" Version="2.27.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.4" />
   </ItemGroup>
 </Project>
