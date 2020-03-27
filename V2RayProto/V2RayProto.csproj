@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>2.0</Version>
+    <authors>Hayama Umi (umi@umiblog.cn)</authors>
+    <owners>Hayama Umi</owners>
+    <description>V2Ray grpc 接口</description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc" Version="2.27.0" />
+    <PackageReference Include="Grpc.Core" Version="2.27.0" />
+    <PackageReference Include="Grpc.Core.Api" Version="2.27.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.27.0" />
+  </ItemGroup>
+
+</Project>
