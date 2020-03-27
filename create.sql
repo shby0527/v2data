@@ -25,6 +25,8 @@ create table `info_server`(
         `adminId` int UNSIGNED not null -- 管理者ID 
 )engine=innodb charset=utf8;
 
+alter table `info_server` add column `publicKey` text not null; -- 这是这个服务器的公钥（私钥服务器自己负责保存）
+
 -- 服务器用户
 create table `info_v2user`(
 		`id`   int UNSIGNED not null PRIMARY key AUTO_INCREMENT,
