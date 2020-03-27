@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataWeb.DbContents;
+﻿using DataWeb.DbContents;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SecretLib.Asymmetric;
 using SecretLib.Hash;
 using SecretLib.Sign;
@@ -34,7 +29,9 @@ namespace DataWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers()
+                .SetCompatibilityVersion(CompatibilityVersion.Latest)
+                .AddControllersAsServices();
             services.AddDbContextPool<V2RayDbContent>(builder =>
             {
                 string connection = Configuration.GetConnectionString("MySQL");
@@ -59,16 +56,21 @@ namespace DataWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseRouting();
 
             app.UseCors();
 
-            app.UseMvcWithDefaultRoute();
+            app.UseEndpoints(endpoint =>
+            {
+                endpoint.MapHealthChecks("/health");
+                endpoint.MapDefaultControllerRoute();
+            });
         }
     }
 }
