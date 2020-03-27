@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataGetter.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using V2Ray.Core.App.Proxyman.Command;
@@ -16,7 +17,12 @@ namespace DataGetter.Services.Impl
             this._client = client;
         }
 
-        public bool InitUsers()
+        public bool AddUser(V2RayUserInfo user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InitUsers(IEnumerable<V2RayUserInfo> users)
         {
             AddUserOperation addUser = new AddUserOperation();
             addUser.User = new V2Ray.Core.Common.Protocol.User();
@@ -24,6 +30,11 @@ namespace DataGetter.Services.Impl
             addUser.User.Account = SearisUtils.ToTypedMessage(account);
             AlterInboundRequest request = new AlterInboundRequest();
             request.Operation = SearisUtils.ToTypedMessage(addUser);
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveUser(V2RayUserInfo user)
+        {
             throw new NotImplementedException();
         }
     }
