@@ -60,7 +60,7 @@ namespace DataGetter.Services.Impl
                     var data = await v2rayService.QueryV2RayDataAsync(stoppingToken);
                     string json = JsonConvert.SerializeObject(data);
                     byte[] bytes = Encoding.UTF8.GetBytes(json);
-                    RandomNumberGenerator numberGenerator = RandomNumberGenerator.Create();
+                    using RandomNumberGenerator numberGenerator = RandomNumberGenerator.Create();
                     byte[] keyData = new byte[32];
                     numberGenerator.GetBytes(keyData);
                     KeyParameter key = new KeyParameter(keyData);
@@ -89,7 +89,8 @@ namespace DataGetter.Services.Impl
                     }
 
                 }
-                catch(Exception e){
+                catch (Exception e)
+                {
                     Console.Write(JsonConvert.SerializeObject(e));
                 }
                 Thread.Sleep(600000); // 10分钟

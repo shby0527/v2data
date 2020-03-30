@@ -78,7 +78,7 @@ namespace DataWeb.Controllers
                         Size = Convert.ToUInt64(s.DataSize),
                         User = s.User,
                         Utype = s.UserType,
-                        CreateTime = DateTime.Now,
+                        CreateTime = DateTimeOffset.Now,
                         Tags = tag
                     });
                 this.db.DataEntity.AddRange(db);

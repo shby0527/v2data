@@ -44,7 +44,7 @@ namespace DataWeb
             services.AddSingleton<ISymmetric, AesCBCService>();
             services.AddSingleton<IAsymmetric, RsaAsymmetricService>();
             services.AddSingleton<IHash, SHA256Hash>();
-            services.AddSingleton<ISign, EcdsaSignProvider>();
+            services.AddSingleton<ISign, RSASha1Sign>();
             services.AddCors(p =>
             {
                 p.DefaultPolicyName = "default";

@@ -17,11 +17,6 @@ namespace SecretLib.Sign
         string Name { get; }
 
         /// <summary>
-        /// 签名Hash
-        /// </summary>
-        IHash Hash { get; }
-
-        /// <summary>
         /// 签名
         /// </summary>
         /// <param name="data"></param>
