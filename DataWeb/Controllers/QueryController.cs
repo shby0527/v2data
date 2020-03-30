@@ -93,7 +93,12 @@ namespace DataWeb.Controllers
             using RandomNumberGenerator numberGenerator = RandomNumberGenerator.Create();
             numberGenerator.GetBytes(aesKey);
             KeyParameter aes = new KeyParameter(aesKey);
-            string dataJson = JsonConvert.SerializeObject(server.ServerUsers);
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            string dataJson = JsonConvert.SerializeObject(server.ServerUsers, settings);
             byte[] resultOrigin = Encoding.UTF8.GetBytes(dataJson);
             byte[] cryptedData = symmetric.Encrypto(resultOrigin, aes);
             byte[] cryptedKey = asymmetric.Encrypto(aesKey, key);
