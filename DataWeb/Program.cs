@@ -12,8 +12,6 @@ namespace DataWeb
 
         public static IHostBuilder CreateWebHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .ConfigureWebHost(web =>
-            web.UseStartup<Startup>());
-
+            .ConfigureWebHost(web => web.UseStartup<Startup>().UseKestrel());
     }
 }

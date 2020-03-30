@@ -23,9 +23,9 @@ namespace DataWeb.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<DataEntity> Query([FromQuery]string name, [FromQuery] DateTime? start, [FromQuery] DateTime? end, [FromQuery]string tag)
+        public IEnumerable<DataEntity> Query([FromQuery]string name, [FromQuery] DateTimeOffset? start, [FromQuery] DateTimeOffset? end, [FromQuery]string tag)
         {
-            var data = from p in db.DataEntity select p;
+            IQueryable<DataEntity> data = db.DataEntity;
             if (!string.IsNullOrEmpty(name))
             {
                 data = data.Where(p => p.User == name);

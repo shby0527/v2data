@@ -16,26 +16,28 @@ namespace DataWeb
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, ILoggerFactory factory)
+        private readonly IConfiguration configuration;
+
+        public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
-            this.factory = factory;
+            this.configuration = configuration;
         }
-
-        private readonly ILoggerFactory factory;
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
+
+            services.AddHealthChecks();
+
             services.AddControllers()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddNewtonsoftJson()
                 .AddControllersAsServices();
-            services.AddDbContextPool<V2RayDbContent>(builder =>
+            services.AddDbContextPool<V2RayDbContent>((provider, builder) =>
             {
-                string connection = Configuration.GetConnectionString("MySQL");
+                ILoggerFactory factory = provider.GetRequiredService<ILoggerFactory>();
+                string connection = configuration.GetConnectionString("MySQL");
                 builder.UseMySql(connection)
                 .UseLoggerFactory(factory);
             });
@@ -50,7 +52,7 @@ namespace DataWeb
                 {
                     x.AllowAnyHeader();
                     x.AllowAnyMethod();
-                    x.AllowAnyOrigin();
+                    x.WithOrigins("https://v2.umiblog.cn", "http://localhost:8080");
                     x.AllowCredentials();
                 });
             });
@@ -63,6 +65,7 @@ namespace DataWeb
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseRouting();
 
             app.UseCors();
