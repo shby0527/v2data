@@ -17,6 +17,8 @@ create table `info_admin`(
 		`phone`   varchar(20) not null -- 用来发送验证码的手机	
 )engine=innodb charset=utf8;
 
+ALTER TABLE `info_admin` add column status tinyint UNSIGNED default 0; -- 状态，0：正常，1：启用
+
 -- 服务器表
 create table `info_server`(
         `id`   int UNSIGNED not null PRIMARY key AUTO_INCREMENT,
