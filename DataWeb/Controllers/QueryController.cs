@@ -105,5 +105,38 @@ namespace DataWeb.Controllers
             byte[] resultSign = this.sign.Sign(cryptedData, privateKey);
             return $"{Convert.ToBase64String(cryptedKey)},{Convert.ToBase64String(cryptedData)},{Convert.ToBase64String(resultSign)}";
         }
+
+        [HttpGet("users/{userId}")]
+        public string GetServerUsersById([FromQuery]uint serverId, [FromRoute(Name = "userId")]uint userId, [FromQuery]string code, [FromQuery]string keycode)
+        {
+            var users = from p in db.ServerUsers
+                        .Include(p => p.Server)
+                        .AsNoTracking()
+                        where p.Id == userId && p.Server.Id == serverId
+                        select p;
+            var user = users.ToArray().FirstOrDefault();
+            if (user == null) return string.Empty;
+            // 读取code, 并读取keycode （对 code 的签名）,校验通过后表示合法服务器请求，可放行
+            byte[] origin = Convert.FromBase64String(code);
+            byte[] sign = Convert.FromBase64String(keycode);
+            var key = PEMReaderUtils.ReadAsymmetricKey(user.Server.PublicKey);
+            // 签名验证不通过
+            if (!this.sign.Verify(origin, sign, key)) return string.Empty;
+            byte[] aesKey = new byte[32];
+            using RandomNumberGenerator numberGenerator = RandomNumberGenerator.Create();
+            numberGenerator.GetBytes(aesKey);
+            KeyParameter aes = new KeyParameter(aesKey);
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            string dataJson = JsonConvert.SerializeObject(user, settings);
+            byte[] resultOrigin = Encoding.UTF8.GetBytes(dataJson);
+            byte[] cryptedData = symmetric.Encrypto(resultOrigin, aes);
+            byte[] cryptedKey = asymmetric.Encrypto(aesKey, key);
+            byte[] resultSign = this.sign.Sign(cryptedData, privateKey);
+            return $"{Convert.ToBase64String(cryptedKey)},{Convert.ToBase64String(cryptedData)},{Convert.ToBase64String(resultSign)}";
+        }
     }
 }
