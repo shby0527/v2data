@@ -1,4 +1,5 @@
 ﻿using DataWeb.DbContents;
+using DataWeb.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SecretLib.Asymmetric;
 using SecretLib.Hash;
+using SecretLib.Mac;
 using SecretLib.Sign;
 using SecretLib.Symmetric;
 
@@ -30,6 +32,8 @@ namespace DataWeb
 
             services.AddHealthChecks();
 
+            services.AddHttpClient();
+
             services.AddControllers()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddNewtonsoftJson()
@@ -45,6 +49,8 @@ namespace DataWeb
             services.AddSingleton<IAsymmetric, RsaAsymmetricService>();
             services.AddSingleton<IHash, SHA256Hash>();
             services.AddSingleton<ISign, RSASha1Sign>();
+            services.AddSingleton<IMac, SHA1Hmac>();
+            services.AddSingleton<AliMessageService>();
             services.AddCors(p =>
             {
                 p.DefaultPolicyName = "default";
